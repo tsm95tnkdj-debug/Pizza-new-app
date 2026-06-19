@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111111">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pizza">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Calculateur Pizza</title>
+  <style>
+    :root {
+      --bg:#f6f1e8; --card:#fff; --text:#111; --muted:#666; --line:#eee;
+      --dark:#111; --soft:#f7f7f7;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; padding:env(safe-area-inset-top) 16px 24px 16px;
+      background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;
+    }
+    .app{
+      max-width:680px; margin:18px auto; background:var(--card);
+      border-radius:24px; padding:22px; box-shadow:0 8px 28px rgba(0,0,0,.10);
+    }
+    h1{margin:0 0 6px;font-size:27px}
+    .subtitle{margin:0 0 18px;color:var(--muted);font-size:15px;line-height:1.35}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .field{margin-bottom:14px}
+    label{display:block;font-size:14px;color:var(--muted);font-weight:700;margin-bottom:6px}
+    input,select{
+      width:100%; border:1px solid #bcbcbc; border-radius:14px; padding:13px;
+      font-size:20px; background:white; color:var(--text); -webkit-appearance:none; appearance:none;
+    }
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--soft);padding:6px;border-radius:16px;margin-bottom:16px}
+    .tab{border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:800;background:transparent;color:var(--text)}
+    .tab.active{background:var(--dark);color:white}
+    .card{background:var(--soft);padding:14px;border-radius:16px;margin:10px 0 16px;color:#444;font-size:14px;line-height:1.45}
+    .results{border-top:1px solid var(--line);margin-top:10px}
+    .row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);font-size:17px}
+    .value{font-size:20px;font-weight:900;white-space:nowrap}
+    .small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    button.action{border:0;border-radius:14px;padding:13px;font-size:16px;font-weight:800;background:var(--dark);color:white}
+    button.secondary{background:var(--soft);color:var(--text)}
+    .settings{margin-top:18px}
+    summary{font-weight:900;cursor:pointer;padding:12px 0}
+    @media(max-width:430px){.grid,.actions{grid-template-columns:1fr}.row{font-size:16px}.value{font-size:19px}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <h1>Calculateur Pizza</h1>
+  <p class="subtitle">Choisis la pâte, le mode de calcul, et l’app calcule les proportions.</p>
+
+  <div class="field">
+    <label for="typePate">Type de pâte</label>
+    <select id="typePate">
+      <option value="taglia">Taglia</option>
+      <option value="tonda">Tonda</option>
+      <option value="napolitaine">Napolitaine</option>
+      <option value="focaccia">Focaccia</option>
+    </select>
+  </div>
+
+  <div class="tabs">
+    <button id="tabFarine" class="tab active" type="button">Depuis farine</button>
+    <button id="tabPatons" class="tab" type="button">Depuis pâtons</button>
+  </div>
+
+  <section id="modeFarine">
+    <div class="field">
+      <label for="farine">Farine en grammes</label>
+      <input id="farine" type="text" inputmode="decimal" value="1000">
+    </div>
+  </section>
+
+  <section id="modePatons" style="display:none">
+    <div class="grid">
+      <div class="field">
+        <label for="nbPatons">Nombre de pâtons</label>
+        <input id="nbPatons" type="text" inputmode="numeric" value="4">
+      </div>
+      <div class="field">
+        <label for="poidsPaton">Poids par pâton</label>
+        <input id="poidsPaton" type="text" inputmode="decimal" value="280">
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="field">
+      <label for="typeLevure">Type de levure</label>
+      <select id="typeLevure">
+        <option value="seche">Levure sèche</option>
+        <option value="fraiche">Levure fraîche</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="split">Division eau</label>
+      <select id="split">
+        <option value="70">70 % / 30 %</option>
+        <option value="80">80 % / 20 %</option>
+        <option value="100">100 % / 0 %</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card" id="description"></div>
+
+  <details class="settings">
+    <summary>Modifier les pourcentages</summary>
+    <div class="grid">
+      <div class="field"><label for="pctLevure">Levure %</label><input id="pctLevure" type="text" inputmode="decimal"></div>
+      <div class="field"><label for="pctEau">Eau %</label><input id="pctEau" type="text" inputmode="decimal"></div>
+      <div class="field"><label for="pctSel">Sel %</label><input id="pctSel" type="text" inputmode="decimal"></div>
+      <div class="field"><label for="pctHuile">Huile %</label><input id="pctHuile" type="text" inputmode="decimal"></div>
+    </div>
+  </details>
+
+  <section class="results" aria-live="polite">
+    <div class="row"><span>Farine</span><span class="value" id="rFarine">0 g</span></div>
+    <div class="row"><span>Levure<span class="small" id="lLevure"></span></span><span class="value" id="rLevure">0 g</span></div>
+    <div class="row"><span>Eau totale<span class="small" id="lEau"></span></span><span class="value" id="rEau">0 g</span></div>
+    <div class="row"><span>Première eau</span><span class="value" id="rEauA">0 g</span></div>
+    <div class="row"><span>Deuxième eau</span><span class="value" id="rEauB">0 g</span></div>
+    <div class="row"><span>Sel<span class="small" id="lSel"></span></span><span class="value" id="rSel">0 g</span></div>
+    <div class="row"><span>Huile<span class="small" id="lHuile"></span></span><span class="value" id="rHuile">0 g</span></div>
+    <div class="row"><span>Poids total pâte</span><span class="value" id="rTotal">0 g</span></div>
+    <div class="row"><span>Poids par pâton estimé</span><span class="value" id="rPaton">0 g</span></div>
+  </section>
+
+  <div class="actions">
+    <button class="action" type="button" id="copier">Copier recette</button>
+    <button class="action secondary" type="button" id="reset">Réinitialiser</button>
+  </div>
+</main>
+
+<script>
+const recettes = {
+  taglia: {nom:"Taglia", levure:0.2, eau:80, sel:2, huile:2, desc:"Taglia : eau 80 %, levure 0,2 %, sel 2 %, huile 2 %."},
+  tonda: {nom:"Tonda", levure:0.2, eau:60, sel:2.75, huile:2.5, desc:"Tonda : eau 60 %, levure 0,2 %, sel 2,75 %, huile 2,5 %."},
+  napolitaine: {nom:"Napolitaine", levure:0.2, eau:65, sel:2.8, huile:0, desc:"Napolitaine : base sans huile, hydratation 65 %, sel 2,8 %."},
+  focaccia: {nom:"Focaccia", levure:0.3, eau:85, sel:2.2, huile:4, desc:"Focaccia : hydratation élevée 85 %, huile 4 %."}
+};
+let mode = "farine";
+const $ = id => document.getElementById(id);
+
+function parseFR(v){
+  v = String(v || "").replace(",", ".").replace(/[^0-9.]/g, "");
+  const n = parseFloat(v);
+  return Number.isFinite(n) && n >= 0 ? n : 0;
+}
+function fmt(n){
+  n = Math.round(n * 10) / 10;
+  return n.toLocaleString("fr-FR", {maximumFractionDigits:1}) + " g";
+}
+function pct(n){ return n.toLocaleString("fr-FR", {maximumFractionDigits:2}) + " % de la farine"; }
+function set(id, v){ $(id).textContent = fmt(v); }
+
+function chargerRecette(){
+  const r = recettes[$("typePate").value];
+  $("pctLevure").value = String(r.levure).replace(".", ",");
+  $("pctEau").value = String(r.eau).replace(".", ",");
+  $("pctSel").value = String(r.sel).replace(".", ",");
+  $("pctHuile").value = String(r.huile).replace(".", ",");
+  $("description").textContent = r.desc;
+  calculer();
+}
+
+function calculer(){
+  const levPct = parseFR($("pctLevure").value);
+  const eauPct = parseFR($("pctEau").value);
+  const selPct = parseFR($("pctSel").value);
+  const huilePct = parseFR($("pctHuile").value);
+  const split = parseFR($("split").value) / 100;
+
+  let farine = parseFR($("farine").value);
+  if(mode === "patons"){
+    const totalVise = parseFR($("nbPatons").value) * parseFR($("poidsPaton").value);
+    const levRatio = levPct / 100;
+    const eauRatio = eauPct / 100;
+    const selRatio = selPct / 100;
+    const huileRatio = huilePct / 100;
+    const levRatioReel = $("typeLevure").value === "fraiche" ? levRatio * 3 : levRatio;
+    const ratioTotal = 1 + levRatioReel + eauRatio + selRatio + huileRatio;
+    farine = ratioTotal > 0 ? totalVise / ratioTotal : 0;
+  }
+
+  let levure = farine * (levPct / 100);
+  if($("typeLevure").value === "fraiche") levure *= 3;
+
+  const eau = farine * (eauPct / 100);
+  const sel = farine * (selPct / 100);
+  const huile = farine * (huilePct / 100);
+  const eauA = eau * split;
+  const eauB = eau - eauA;
+  const total = farine + levure + eau + sel + huile;
+
+  let paton = 0;
+  const nb = parseFR($("nbPatons").value);
+  if(nb > 0) paton = total / nb;
+
+  set("rFarine", farine);
+  set("rLevure", levure);
+  set("rEau", eau);
+  set("rEauA", eauA);
+  set("rEauB", eauB);
+  set("rSel", sel);
+  set("rHuile", huile);
+  set("rTotal", total);
+  set("rPaton", paton);
+
+  $("lLevure").textContent = pct(levPct) + ($("typeLevure").value === "fraiche" ? " × 3" : "");
+  $("lEau").textContent = pct(eauPct);
+  $("lSel").textContent = pct(selPct);
+  $("lHuile").textContent = pct(huilePct);
+}
+
+function setMode(m){
+  mode = m;
+  $("modeFarine").style.display = m === "farine" ? "block" : "none";
+  $("modePatons").style.display = m === "patons" ? "block" : "none";
+  $("tabFarine").classList.toggle("active", m === "farine");
+  $("tabPatons").classList.toggle("active", m === "patons");
+  calculer();
+}
+
+function copier(){
+  const texte = [
+    "Recette : " + recettes[$("typePate").value].nom,
+    "Farine : " + $("rFarine").textContent,
+    "Levure : " + $("rLevure").textContent,
+    "Eau totale : " + $("rEau").textContent,
+    "Première eau : " + $("rEauA").textContent,
+    "Deuxième eau : " + $("rEauB").textContent,
+    "Sel : " + $("rSel").textContent,
+    "Huile : " + $("rHuile").textContent,
+    "Poids total : " + $("rTotal").textContent,
+    "Poids par pâton : " + $("rPaton").textContent
+  ].join("\n");
+  if(navigator.clipboard) navigator.clipboard.writeText(texte).then(()=>alert("Recette copiée"));
+  else alert(texte);
+}
+
+function reset(){
+  $("typePate").value = "taglia";
+  $("farine").value = "1000";
+  $("nbPatons").value = "4";
+  $("poidsPaton").value = "280";
+  $("typeLevure").value = "seche";
+  $("split").value = "70";
+  setMode("farine");
+  chargerRecette();
+}
+
+["farine","nbPatons","poidsPaton","typeLevure","split","pctLevure","pctEau","pctSel","pctHuile"].forEach(id=>{
+  $(id).addEventListener("input", calculer);
+  $(id).addEventListener("change", calculer);
+});
+$("typePate").addEventListener("change", chargerRecette);
+$("tabFarine").addEventListener("click", ()=>setMode("farine"));
+$("tabPatons").addEventListener("click", ()=>setMode("patons"));
+$("copier").addEventListener("click", copier);
+$("reset").addEventListener("click", reset);
+
+chargerRecette();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
