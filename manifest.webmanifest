@@ -1,10 +1,10 @@
 {
-  "name": "Calculateur Pizza",
-  "short_name": "Pizza",
+  "name": "Pizza Lab",
+  "short_name": "Pizza Lab",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f6f1e8",
-  "theme_color": "#111111",
+  "background_color": "#fff4df",
+  "theme_color": "#e85d3f",
   "icons": [
     {
       "src": "icon-192.png",
