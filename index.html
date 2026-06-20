@@ -2,78 +2,120 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#e85d3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Pizza Lab">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pizza Pro">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Pizza Lab</title>
+<title>Pizza Lab Pro</title>
 <style>
-:root{--bg1:#fff4df;--bg2:#ffe2d1;--card:#fffdf8;--text:#20120d;--muted:#765b50;--line:#f0ddd2;--red:#e85d3f;--dark:#2b1812;--yellow:#ffd166;--soft:#fff3e8}
 *{box-sizing:border-box}
-body{margin:0;padding:env(safe-area-inset-top) 16px 24px 16px;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}
-.app{max-width:720px;margin:18px auto;background:var(--card);border-radius:30px;padding:22px;box-shadow:0 12px 35px rgba(111,61,35,.18);border:2px solid rgba(232,93,63,.12)}
-.hero{display:flex;gap:14px;align-items:center;margin-bottom:16px}.emoji{width:64px;height:64px;border-radius:20px;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 6px 16px rgba(232,93,63,.22)}
-h1{margin:0;font-size:29px;line-height:1}.subtitle{margin:6px 0 0;color:var(--muted);font-size:15px;line-height:1.35}
+body{margin:0;padding:16px;background:linear-gradient(160deg,#fff4df,#ffd9c8);font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;color:#20120d}
+.app{max-width:760px;margin:auto;background:#fffdf8;border-radius:28px;padding:22px;box-shadow:0 12px 35px rgba(111,61,35,.18)}
+.hero{display:flex;gap:14px;align-items:center;margin-bottom:18px}.logo{width:60px;height:60px;border-radius:18px;background:#ffd166;display:flex;align-items:center;justify-content:center;font-size:36px}
+h1{margin:0;font-size:29px}.sub{margin:5px 0 0;color:#765b50;font-size:15px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:14px}
-label{display:block;font-size:14px;color:var(--muted);font-weight:800;margin-bottom:6px}
-input,select{width:100%;border:2px solid #f0d3c4;border-radius:18px;padding:13px;font-size:20px;background:white;color:var(--text);-webkit-appearance:none;appearance:none}
-input:focus,select:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(232,93,63,.12)}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--soft);padding:7px;border-radius:20px;margin-bottom:16px}
-.tab{border:0;border-radius:15px;padding:13px;font-size:15px;font-weight:900;background:transparent;color:var(--text)}
-.tab.active{background:var(--red);color:white;box-shadow:0 5px 12px rgba(232,93,63,.28)}
-.card{background:linear-gradient(135deg,#fff7e6,#ffe8db);padding:15px;border-radius:20px;margin:10px 0 16px;color:#51382e;font-size:15px;line-height:1.45;border:1px solid #f4d4c5}
-.flour-card{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,#ffffff,#fff0de);border:2px dashed #e85d3f;border-radius:22px;padding:15px;margin-bottom:16px}
-.flour-icon{font-size:34px}.flour-title{font-weight:950;font-size:17px;margin-bottom:4px}.flour-text{color:#5d4036;font-size:15px;line-height:1.35}
-.results{border-top:2px solid var(--line);margin-top:10px}.row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:17px}
-.value{font-size:21px;font-weight:950;white-space:nowrap;color:#32150d}.small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+label{display:block;font-weight:800;color:#765b50;font-size:14px;margin-bottom:6px}
+input,select{width:100%;border:2px solid #f0d3c4;border-radius:16px;padding:13px;font-size:20px;background:white}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;background:#fff3e8;padding:7px;border-radius:20px;margin-bottom:16px}
+.tab{border:0;border-radius:15px;padding:13px;font-weight:900;background:transparent}.tab.active{background:#e85d3f;color:white}
+.card{background:#fff0de;border:1px solid #f0d3c4;border-radius:20px;padding:14px;margin:12px 0;color:#51382e;line-height:1.4}
+.flour{border:2px dashed #e85d3f;background:white;border-radius:20px;padding:14px;margin-bottom:16px}
+.results{border-top:2px solid #f0ddd2;margin-top:10px}.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #f0ddd2;padding:13px 0;font-size:17px}
+.val{font-weight:950;font-size:20px;white-space:nowrap}.small{display:block;font-size:13px;color:#765b50;margin-top:3px}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-button.action{border:0;border-radius:18px;padding:14px;font-size:16px;font-weight:950;background:var(--red);color:white;box-shadow:0 6px 14px rgba(232,93,63,.28)}
-button.secondary{background:#fff0de;color:var(--dark);box-shadow:none}.settings{margin-top:18px}summary{font-weight:950;cursor:pointer;padding:12px 0;color:#4d2a1d}
-.badge{display:inline-block;background:#2f9b65;color:white;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900;margin-left:6px}
-@media(max-width:430px){.grid,.actions{grid-template-columns:1fr}.row{font-size:16px}.value{font-size:19px}.hero{align-items:flex-start}.emoji{width:56px;height:56px;font-size:34px}}
+button.action{border:0;border-radius:16px;padding:14px;font-size:16px;font-weight:900;background:#e85d3f;color:white}
+button.secondary{background:#fff0de;color:#2b1812}
+details{margin-top:14px}summary{font-weight:900;padding:12px 0}.fav{background:#fff8ee;border:1px solid #f0ddd2;border-radius:16px;padding:12px;margin:8px 0;font-size:14px}
+@media(max-width:520px){.grid,.tabs,.actions{grid-template-columns:1fr}.row{font-size:16px}.val{font-size:19px}}
 </style>
 </head>
 <body>
 <main class="app">
-<div class="hero"><div class="emoji">🍕</div><div><h1>Pizza Lab</h1><p class="subtitle">Ton calculateur de pâte, version plus fun et plus pratique.</p></div></div>
-<div class="field"><label for="typePate">Type de pâte</label><select id="typePate"><option value="taglia">🍕 Taglia</option><option value="tonda">🔥 Tonda</option><option value="napolitaine">🇮🇹 Napolitaine</option><option value="focaccia">🌿 Focaccia</option></select></div>
-<div class="flour-card"><div class="flour-icon">🌾</div><div><div class="flour-title">Farine recommandée <span class="badge">Conseil</span></div><div class="flour-text" id="farineReco"></div></div></div>
-<div class="tabs"><button id="tabFarine" class="tab active" type="button">Depuis farine</button><button id="tabPatons" class="tab" type="button">Depuis pâtons</button></div>
-<section id="modeFarine"><div class="field"><label for="farine">Farine en grammes</label><input id="farine" type="text" inputmode="decimal" value="1000"></div></section>
-<section id="modePatons" style="display:none"><div class="grid"><div class="field"><label for="nbPatons">Nombre de pâtons</label><input id="nbPatons" type="text" inputmode="numeric" value="4"></div><div class="field"><label for="poidsPaton">Poids par pâton</label><input id="poidsPaton" type="text" inputmode="decimal" value="280"></div></div></section>
-<div class="grid"><div class="field"><label for="typeLevure">Type de levure</label><select id="typeLevure"><option value="seche">Levure sèche</option><option value="fraiche">Levure fraîche</option></select></div><div class="field"><label for="split">Division eau</label><select id="split"><option value="70">70 % / 30 %</option><option value="80">80 % / 20 %</option><option value="100">100 % / 0 %</option></select></div></div>
+<div class="hero"><div class="logo">🍕</div><div><h1>Pizza Lab Pro</h1><p class="sub">Pâte, plaques, maturation et recettes favorites.</p></div></div>
+
+<div class="field"><label>Type de pâte</label><select id="typePate">
+<option value="taglia">🍕 Taglia / Teglia</option><option value="tonda">🔥 Tonda</option><option value="napolitaine">🇮🇹 Napolitaine</option><option value="focaccia">🌿 Focaccia</option>
+</select></div>
+
+<div class="flour"><b>🌾 Farine recommandée</b><br><span id="farineReco"></span></div>
+
+<div class="tabs">
+<button id="tabFarine" class="tab active">Depuis farine</button>
+<button id="tabPatons" class="tab">Depuis pâtons</button>
+<button id="tabPlaques" class="tab">Depuis plaques</button>
+</div>
+
+<section id="modeFarine"><div class="field"><label>Farine en g</label><input id="farine" inputmode="decimal" value="1000"></div></section>
+
+<section id="modePatons" style="display:none"><div class="grid">
+<div class="field"><label>Nombre de pâtons</label><input id="nbPatons" inputmode="numeric" value="4"></div>
+<div class="field"><label>Poids par pâton</label><input id="poidsPaton" inputmode="decimal" value="280"></div>
+</div></section>
+
+<section id="modePlaques" style="display:none"><div class="grid">
+<div class="field"><label>Format plaque</label><select id="formatPlaque"><option value="60x40">60 × 40</option><option value="40x30">40 × 30</option><option value="30x20">30 × 20</option><option value="custom">Personnalisé</option></select></div>
+<div class="field"><label>Nombre de plaques</label><input id="nbPlaques" inputmode="numeric" value="1"></div>
+<div class="field"><label>Largeur cm</label><input id="largeurPlaque" inputmode="decimal" value="60"></div>
+<div class="field"><label>Longueur cm</label><input id="longueurPlaque" inputmode="decimal" value="40"></div>
+<div class="field"><label>Grammage pâte</label><select id="grammagePlaque"><option value="0.55">Léger</option><option value="0.65" selected>Standard</option><option value="0.75">Épais</option></select></div>
+</div></section>
+
+<div class="grid">
+<div class="field"><label>Type de levure</label><select id="typeLevure"><option value="seche">Levure sèche</option><option value="fraiche">Levure fraîche</option></select></div>
+<div class="field"><label>Division eau</label><select id="split"><option value="70">70/30</option><option value="80">80/20</option><option value="100">100/0</option></select></div>
+<div class="field"><label>Maturation</label><select id="maturation"><option value="24">24 h</option><option value="48" selected>48 h</option><option value="72">72 h</option></select></div>
+<div class="field"><label>Température frigo</label><select id="temperature"><option value="3">3 °C</option><option value="4" selected>4 °C</option><option value="6">6 °C</option></select></div>
+</div>
+
 <div class="card" id="description"></div>
-<details class="settings"><summary>⚙️ Modifier les pourcentages</summary><div class="grid"><div class="field"><label for="pctLevure">Levure %</label><input id="pctLevure" type="text" inputmode="decimal"></div><div class="field"><label for="pctEau">Eau %</label><input id="pctEau" type="text" inputmode="decimal"></div><div class="field"><label for="pctSel">Sel %</label><input id="pctSel" type="text" inputmode="decimal"></div><div class="field"><label for="pctHuile">Huile %</label><input id="pctHuile" type="text" inputmode="decimal"></div></div></details>
-<section class="results" aria-live="polite">
-<div class="row"><span>🌾 Farine</span><span class="value" id="rFarine">0 g</span></div>
-<div class="row"><span>🧫 Levure<span class="small" id="lLevure"></span></span><span class="value" id="rLevure">0 g</span></div>
-<div class="row"><span>💧 Eau totale<span class="small" id="lEau"></span></span><span class="value" id="rEau">0 g</span></div>
-<div class="row"><span>💧 Première eau</span><span class="value" id="rEauA">0 g</span></div>
-<div class="row"><span>💧 Deuxième eau</span><span class="value" id="rEauB">0 g</span></div>
-<div class="row"><span>🧂 Sel<span class="small" id="lSel"></span></span><span class="value" id="rSel">0 g</span></div>
-<div class="row"><span>🫒 Huile<span class="small" id="lHuile"></span></span><span class="value" id="rHuile">0 g</span></div>
-<div class="row"><span>⚖️ Poids total pâte</span><span class="value" id="rTotal">0 g</span></div>
-<div class="row"><span>🍕 Poids par pâton estimé</span><span class="value" id="rPaton">0 g</span></div>
+
+<details><summary>⚙️ Modifier les pourcentages</summary><div class="grid">
+<div class="field"><label>Levure % manuel</label><input id="pctLevure" inputmode="decimal"></div>
+<div class="field"><label>Eau %</label><input id="pctEau" inputmode="decimal"></div>
+<div class="field"><label>Sel %</label><input id="pctSel" inputmode="decimal"></div>
+<div class="field"><label>Huile %</label><input id="pctHuile" inputmode="decimal"></div>
+</div></details>
+
+<section class="results">
+<div class="row"><span>🌾 Farine</span><span class="val" id="rFarine">0 g</span></div>
+<div class="row"><span>🧫 Levure conseillée<span class="small" id="lLevAuto"></span></span><span class="val" id="rLevAuto">0 g</span></div>
+<div class="row"><span>🧫 Levure manuelle<span class="small" id="lLevure"></span></span><span class="val" id="rLevure">0 g</span></div>
+<div class="row"><span>💧 Eau totale<span class="small" id="lEau"></span></span><span class="val" id="rEau">0 g</span></div>
+<div class="row"><span>💧 Première eau</span><span class="val" id="rEauA">0 g</span></div>
+<div class="row"><span>💧 Deuxième eau</span><span class="val" id="rEauB">0 g</span></div>
+<div class="row"><span>🧂 Sel<span class="small" id="lSel"></span></span><span class="val" id="rSel">0 g</span></div>
+<div class="row"><span>🫒 Huile<span class="small" id="lHuile"></span></span><span class="val" id="rHuile">0 g</span></div>
+<div class="row"><span>⚖️ Poids total</span><span class="val" id="rTotal">0 g</span></div>
+<div class="row"><span>🍕 Poids par unité</span><span class="val" id="rUnite">0 g</span></div>
 </section>
-<div class="actions"><button class="action" type="button" id="copier">Copier recette</button><button class="action secondary" type="button" id="reset">Réinitialiser</button></div>
+
+<div class="actions"><button class="action" id="copier">Copier recette</button><button class="action secondary" id="saveFav">Sauver favorite</button></div>
+<div class="actions"><button class="action secondary" id="reset">Réinitialiser</button><button class="action secondary" id="clearFavs">Effacer favoris</button></div>
+<h3>⭐ Recettes favorites</h3><div id="favoris"></div>
 </main>
+
 <script>
-const recettes={taglia:{nom:"Taglia",levure:0.2,eau:80,sel:2,huile:2,farine:"Farine T0 — W320 — Caputo rouge. Idéale pour une pâte très hydratée, type taglia/teglia.",desc:"Taglia : eau 80 %, levure 0,2 %, sel 2 %, huile 2 %. Parfaite pour une pâte légère, alvéolée et croustillante."},tonda:{nom:"Tonda",levure:0.2,eau:60,sel:2.75,huile:2.5,farine:"Farine T0 — W280 — Caputo bleu ciel. Plus adaptée à une pâte tonda souple et facile à étaler.",desc:"Tonda : eau 60 %, levure 0,2 %, sel 2,75 %, huile 2,5 %. Une base plus classique, facile à travailler."},napolitaine:{nom:"Napolitaine",levure:0.2,eau:65,sel:2.8,huile:0,farine:"Farine forte à moyenne, idéalement W260-W300 selon le temps de fermentation.",desc:"Napolitaine : base sans huile, hydratation 65 %, sel 2,8 %."},focaccia:{nom:"Focaccia",levure:0.3,eau:85,sel:2.2,huile:4,farine:"Farine forte recommandée, autour de W300-W330 pour bien supporter l’hydratation.",desc:"Focaccia : hydratation élevée 85 %, huile 4 %, texture moelleuse et gourmande."}};
+const recettes={taglia:{nom:"Taglia",levure:0.2,eau:80,sel:2,huile:2,farine:"T0 — W320 — Caputo rouge",desc:"Taglia : pâte très hydratée, idéale en plaque."},tonda:{nom:"Tonda",levure:0.2,eau:60,sel:2.75,huile:2.5,farine:"T0 — W280 — Caputo bleu ciel",desc:"Tonda : pâte plus classique et facile à étaler."},napolitaine:{nom:"Napolitaine",levure:0.2,eau:65,sel:2.8,huile:0,farine:"W260-W300 selon fermentation",desc:"Napolitaine : base sans huile."},focaccia:{nom:"Focaccia",levure:0.3,eau:85,sel:2.2,huile:4,farine:"W300-W330 recommandé",desc:"Focaccia : hydratation élevée et huile plus présente."}};
 let mode="farine";const $=id=>document.getElementById(id);
-function parseFR(v){v=String(v||"").replace(",",".").replace(/[^0-9.]/g,"");const n=parseFloat(v);return Number.isFinite(n)&&n>=0?n:0}
-function fmt(n){n=Math.round(n*10)/10;return n.toLocaleString("fr-FR",{maximumFractionDigits:1})+" g"}
-function pct(n){return n.toLocaleString("fr-FR",{maximumFractionDigits:2})+" % de la farine"}
-function set(id,v){$(id).textContent=fmt(v)}
-function chargerRecette(){const r=recettes[$("typePate").value];$("pctLevure").value=String(r.levure).replace(".",",");$("pctEau").value=String(r.eau).replace(".",",");$("pctSel").value=String(r.sel).replace(".",",");$("pctHuile").value=String(r.huile).replace(".",",");$("description").textContent=r.desc;$("farineReco").textContent=r.farine;calculer()}
-function calculer(){const levPct=parseFR($("pctLevure").value),eauPct=parseFR($("pctEau").value),selPct=parseFR($("pctSel").value),huilePct=parseFR($("pctHuile").value),split=parseFR($("split").value)/100;let farine=parseFR($("farine").value);if(mode==="patons"){const totalVise=parseFR($("nbPatons").value)*parseFR($("poidsPaton").value);const levRatio=levPct/100,eauRatio=eauPct/100,selRatio=selPct/100,huileRatio=huilePct/100;const levRatioReel=$("typeLevure").value==="fraiche"?levRatio*3:levRatio;const ratioTotal=1+levRatioReel+eauRatio+selRatio+huileRatio;farine=ratioTotal>0?totalVise/ratioTotal:0}let levure=farine*(levPct/100);if($("typeLevure").value==="fraiche")levure*=3;const eau=farine*(eauPct/100),sel=farine*(selPct/100),huile=farine*(huilePct/100),eauA=eau*split,eauB=eau-eauA,total=farine+levure+eau+sel+huile;let paton=0;const nb=parseFR($("nbPatons").value);if(nb>0)paton=total/nb;set("rFarine",farine);set("rLevure",levure);set("rEau",eau);set("rEauA",eauA);set("rEauB",eauB);set("rSel",sel);set("rHuile",huile);set("rTotal",total);set("rPaton",paton);$("lLevure").textContent=pct(levPct)+($("typeLevure").value==="fraiche"?" × 3":"");$("lEau").textContent=pct(eauPct);$("lSel").textContent=pct(selPct);$("lHuile").textContent=pct(huilePct)}
-function setMode(m){mode=m;$("modeFarine").style.display=m==="farine"?"block":"none";$("modePatons").style.display=m==="patons"?"block":"none";$("tabFarine").classList.toggle("active",m==="farine");$("tabPatons").classList.toggle("active",m==="patons");calculer()}
-function copier(){const texte=["Recette : "+recettes[$("typePate").value].nom,"Farine recommandée : "+$("farineReco").textContent,"Farine : "+$("rFarine").textContent,"Levure : "+$("rLevure").textContent,"Eau totale : "+$("rEau").textContent,"Première eau : "+$("rEauA").textContent,"Deuxième eau : "+$("rEauB").textContent,"Sel : "+$("rSel").textContent,"Huile : "+$("rHuile").textContent,"Poids total : "+$("rTotal").textContent,"Poids par pâton : "+$("rPaton").textContent].join("\\n");if(navigator.clipboard)navigator.clipboard.writeText(texte).then(()=>alert("Recette copiée 🍕"));else alert(texte)}
-function reset(){$("typePate").value="taglia";$("farine").value="1000";$("nbPatons").value="4";$("poidsPaton").value="280";$("typeLevure").value="seche";$("split").value="70";setMode("farine");chargerRecette()}
-["farine","nbPatons","poidsPaton","typeLevure","split","pctLevure","pctEau","pctSel","pctHuile"].forEach(id=>{$(id).addEventListener("input",calculer);$(id).addEventListener("change",calculer)});
-$("typePate").addEventListener("change",chargerRecette);$("tabFarine").addEventListener("click",()=>setMode("farine"));$("tabPatons").addEventListener("click",()=>setMode("patons"));$("copier").addEventListener("click",copier);$("reset").addEventListener("click",reset);chargerRecette();
+function n(v){v=String(v||"").replace(",",".").replace(/[^0-9.]/g,"");v=parseFloat(v);return Number.isFinite(v)&&v>=0?v:0}
+function g(v){return (Math.round(v*10)/10).toLocaleString("fr-FR",{maximumFractionDigits:1})+" g"}
+function p(v){return v.toLocaleString("fr-FR",{maximumFractionDigits:2})+" % farine"}
+function set(id,v){$(id).textContent=g(v)}
+function levAutoPct(){let h=n($("maturation").value),t=n($("temperature").value),b=0.2;if(h==48)b=0.12;if(h==72)b=0.08;if(t>=6)b*=0.75;if(t<=3)b*=1.25;return b}
+function loadRecipe(){let r=recettes[$("typePate").value];$("pctLevure").value=String(r.levure).replace(".",",");$("pctEau").value=String(r.eau).replace(".",",");$("pctSel").value=String(r.sel).replace(".",",");$("pctHuile").value=String(r.huile).replace(".",",");$("farineReco").textContent=r.farine;$("description").textContent=r.desc;calc()}
+function setMode(m){mode=m;$("modeFarine").style.display=m=="farine"?"block":"none";$("modePatons").style.display=m=="patons"?"block":"none";$("modePlaques").style.display=m=="plaques"?"block":"none";$("tabFarine").classList.toggle("active",m=="farine");$("tabPatons").classList.toggle("active",m=="patons");$("tabPlaques").classList.toggle("active",m=="plaques");calc()}
+function updatePlaque(){let f=$("formatPlaque").value;if(f=="60x40"){$("largeurPlaque").value=60;$("longueurPlaque").value=40}if(f=="40x30"){$("largeurPlaque").value=40;$("longueurPlaque").value=30}if(f=="30x20"){$("largeurPlaque").value=30;$("longueurPlaque").value=20}calc()}
+function calc(){let lp=n($("pctLevure").value),ep=n($("pctEau").value),sp=n($("pctSel").value),hp=n($("pctHuile").value),split=n($("split").value)/100;let farine=n($("farine").value),vise=0,u=0;if(mode=="patons"){u=n($("nbPatons").value);vise=u*n($("poidsPaton").value)}if(mode=="plaques"){u=n($("nbPlaques").value);vise=u*n($("largeurPlaque").value)*n($("longueurPlaque").value)*n($("grammagePlaque").value)}if(mode!="farine"){let lr=lp/100*($("typeLevure").value=="fraiche"?3:1);farine=vise/(1+lr+ep/100+sp/100+hp/100)}let lev=farine*lp/100,levA=farine*levAutoPct()/100;if($("typeLevure").value=="fraiche"){lev*=3;levA*=3}let eau=farine*ep/100,sel=farine*sp/100,huile=farine*hp/100,total=farine+lev+eau+sel+huile,unite=0;if(mode=="farine"){let nb=n($("nbPatons").value);if(nb>0)unite=total/nb}else if(u>0)unite=total/u;set("rFarine",farine);set("rLevure",lev);set("rLevAuto",levA);set("rEau",eau);set("rEauA",eau*split);set("rEauB",eau*(1-split));set("rSel",sel);set("rHuile",huile);set("rTotal",total);set("rUnite",unite);$("lLevure").textContent=p(lp)+($("typeLevure").value=="fraiche"?" ×3":"");$("lLevAuto").textContent=p(levAutoPct())+" selon maturation/frigo"+($("typeLevure").value=="fraiche"?" ×3":"");$("lEau").textContent=p(ep);$("lSel").textContent=p(sp);$("lHuile").textContent=p(hp)}
+function text(){return ["Pizza Lab Pro - "+recettes[$("typePate").value].nom,"Farine recommandée : "+$("farineReco").textContent,"Farine : "+$("rFarine").textContent,"Levure conseillée : "+$("rLevAuto").textContent,"Levure manuelle : "+$("rLevure").textContent,"Eau : "+$("rEau").textContent,"Première eau : "+$("rEauA").textContent,"Deuxième eau : "+$("rEauB").textContent,"Sel : "+$("rSel").textContent,"Huile : "+$("rHuile").textContent,"Total : "+$("rTotal").textContent].join("\n")}
+function copier(){let t=text();if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>alert("Recette copiée"));else alert(t)}
+function renderFavs(){let f=JSON.parse(localStorage.getItem("pizzaFavs")||"[]");$("favoris").innerHTML=f.length?f.map((x,i)=>'<div class="fav"><b>'+(i+1)+'. '+x.nom+'</b><br>'+x.date+'<pre style="white-space:pre-wrap">'+x.txt+'</pre></div>').join(""):"Aucune recette favorite."}
+function saveFav(){let f=JSON.parse(localStorage.getItem("pizzaFavs")||"[]");f.unshift({nom:recettes[$("typePate").value].nom,date:new Date().toLocaleString("fr-FR"),txt:text()});localStorage.setItem("pizzaFavs",JSON.stringify(f.slice(0,10)));renderFavs();alert("Recette sauvegardée")}
+function reset(){location.reload()}
+["farine","nbPatons","poidsPaton","nbPlaques","largeurPlaque","longueurPlaque","grammagePlaque","typeLevure","split","maturation","temperature","pctLevure","pctEau","pctSel","pctHuile"].forEach(id=>{$(id).addEventListener("input",calc);$(id).addEventListener("change",calc)});
+$("typePate").addEventListener("change",loadRecipe);$("formatPlaque").addEventListener("change",updatePlaque);$("tabFarine").addEventListener("click",()=>setMode("farine"));$("tabPatons").addEventListener("click",()=>setMode("patons"));$("tabPlaques").addEventListener("click",()=>setMode("plaques"));$("copier").addEventListener("click",copier);$("saveFav").addEventListener("click",saveFav);$("clearFavs").addEventListener("click",()=>{localStorage.removeItem("pizzaFavs");renderFavs()});$("reset").addEventListener("click",reset);
+loadRecipe();renderFavs();
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}))}
 </script>
 </body>

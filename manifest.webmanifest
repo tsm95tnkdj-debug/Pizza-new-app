@@ -1,6 +1,6 @@
 {
-  "name": "Pizza Lab",
-  "short_name": "Pizza Lab",
+  "name": "Pizza Lab Pro",
+  "short_name": "Pizza Pro",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff4df",
