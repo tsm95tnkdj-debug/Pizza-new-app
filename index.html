@@ -30,6 +30,9 @@ label{display:block;font-weight:850;color:#765b50;font-size:14px;margin-bottom:6
 input,select,textarea{width:100%;border:2px solid #f0d3c4;border-radius:16px;padding:12px;font-size:18px;background:white}
 textarea{min-height:90px}
 .card{background:#fff0de;border:1px solid #f0d3c4;border-radius:20px;padding:14px;margin:12px 0;color:#51382e;line-height:1.4}
+.mode-banner{background:#20120d;color:#fff;border-radius:18px;padding:12px 14px;margin:0 0 16px;font-weight:950;box-shadow:0 6px 16px rgba(32,18,13,.15)}
+.field.disabled{opacity:.45}
+.field.disabled input,.field.disabled select{background:#eee;color:#888;border-color:#ddd;pointer-events:none}
 .section{display:none}.section.active{display:block}
 .results{border-top:2px solid #f0ddd2;margin-top:10px}.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #f0ddd2;padding:12px 0;font-size:16px}
 .val{font-weight:950;font-size:19px;white-space:nowrap}.small{display:block;font-size:13px;color:#765b50;margin-top:3px}
@@ -75,6 +78,7 @@ button.secondary{background:#fff0de;color:#2b1812}
 </div>
 
 <section id="calc" class="section active">
+<div class="mode-banner" id="modeBanner">🎯 Mode actif : calcul depuis farine</div>
 <div class="field"><label>Type de pâte</label><select id="typePate">
 <option value="taglia">🍕 Taglia / Teglia</option><option value="tonda">🔥 Tonda</option><option value="napolitaine">🇮🇹 Napolitaine</option><option value="focaccia">🌿 Focaccia</option><option value="champion">🏆 Taglia Champion</option>
 </select></div>
@@ -84,14 +88,14 @@ button.secondary{background:#fff0de;color:#2b1812}
 <div class="field"><label>Type de levure</label><select id="typeLevure"><option value="seche">Levure sèche</option><option value="fraiche">Levure fraîche</option></select></div>
 </div>
 <div class="grid">
-<div class="field"><label>Farine g</label><input id="farine" inputmode="decimal" value="1000"></div>
-<div class="field"><label>Nombre unités</label><input id="nbUnites" inputmode="numeric" value="4"></div>
-<div class="field"><label>Poids par pâton g</label><input id="poidsPaton" inputmode="decimal" value="280"></div>
-<div class="field"><label>Diamètre pizza cm</label><input id="diametre" inputmode="decimal" value="32"></div>
-<div class="field"><label>Plaque</label><select id="formatPlaque"><option value="60x40">60×40</option><option value="40x30">40×30</option><option value="30x20">30×20</option><option value="custom">Perso</option></select></div>
-<div class="field"><label>Grammage plaque</label><select id="grammage"><option value="0.55">Léger</option><option value="0.65" selected>Standard</option><option value="0.75">Épais</option></select></div>
-<div class="field"><label>Largeur cm</label><input id="largeur" inputmode="decimal" value="60"></div>
-<div class="field"><label>Longueur cm</label><input id="longueur" inputmode="decimal" value="40"></div>
+<div class="field" id="fieldFarine"><label>Farine g</label><input id="farine" inputmode="decimal" value="1000"></div>
+<div class="field" id="fieldNbUnites"><label>Nombre unités</label><input id="nbUnites" inputmode="numeric" value="4"></div>
+<div class="field" id="fieldPoidsPaton"><label>Poids par pâton g</label><input id="poidsPaton" inputmode="decimal" value="280"></div>
+<div class="field" id="fieldDiametre"><label>Diamètre pizza cm</label><input id="diametre" inputmode="decimal" value="32"></div>
+<div class="field" id="fieldFormatPlaque"><label>Plaque</label><select id="formatPlaque"><option value="60x40">60×40</option><option value="40x30">40×30</option><option value="30x20">30×20</option><option value="custom">Perso</option></select></div>
+<div class="field" id="fieldGrammage"><label>Grammage plaque</label><select id="grammage"><option value="0.55">Léger</option><option value="0.65" selected>Standard</option><option value="0.75">Épais</option></select></div>
+<div class="field" id="fieldLargeur"><label>Largeur cm</label><input id="largeur" inputmode="decimal" value="60"></div>
+<div class="field" id="fieldLongueur"><label>Longueur cm</label><input id="longueur" inputmode="decimal" value="40"></div>
 </div>
 
 <div class="grid">
@@ -172,9 +176,37 @@ function euro(v){return v.toLocaleString("fr-FR",{style:"currency",currency:"EUR
 function setTab(id){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));$(id).classList.add("active");document.querySelector('[data-tab="'+id+'"]').classList.add("active")}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 function levureAutoPct(){let h=n($("maturation").value),f=n($("frigo").value),p=n($("tempPiece").value),b=.22;if(h==48)b=.13;if(h==72)b=.08;if(h==96)b=.055;if(f>=6)b*=.75;if(f<=3)b*=1.25;if(p>=24)b*=.85;if(p<=18)b*=1.15;return b}
+
+function setFieldEnabled(fieldId, inputId, enabled){
+  const field = $(fieldId);
+  const input = $(inputId);
+  if(!field || !input) return;
+  field.classList.toggle("disabled", !enabled);
+  input.disabled = !enabled;
+}
+function updateModeFields(){
+  const m = $("mode").value;
+  const labels = {
+    farine: "🎯 Mode actif : calcul depuis la farine",
+    patons: "🎯 Mode actif : calcul depuis les pâtons",
+    plaques: "🎯 Mode actif : calcul depuis les plaques",
+    diametre: "🎯 Mode actif : calcul depuis le diamètre pizza"
+  };
+  $("modeBanner").textContent = labels[m] || "🎯 Mode actif";
+
+  setFieldEnabled("fieldFarine", "farine", m === "farine");
+  setFieldEnabled("fieldNbUnites", "nbUnites", m === "patons" || m === "plaques" || m === "diametre");
+  setFieldEnabled("fieldPoidsPaton", "poidsPaton", m === "patons");
+  setFieldEnabled("fieldDiametre", "diametre", m === "diametre");
+  setFieldEnabled("fieldFormatPlaque", "formatPlaque", m === "plaques");
+  setFieldEnabled("fieldGrammage", "grammage", m === "plaques");
+  setFieldEnabled("fieldLargeur", "largeur", m === "plaques");
+  setFieldEnabled("fieldLongueur", "longueur", m === "plaques");
+}
+
 function loadRecipe(){let r=recettes[$("typePate").value];$("pctLevure").value=String(r.levure).replace(".",",");$("pctEau").value=String(r.eau).replace(".",",");$("pctSel").value=String(r.sel).replace(".",",");$("pctHuile").value=String(r.huile).replace(".",",");$("farineReco").textContent=r.farine+" — "+r.desc;calc()}
 function updatePlaque(){let f=$("formatPlaque").value;if(f=="60x40"){$("largeur").value=60;$("longueur").value=40}if(f=="40x30"){$("largeur").value=40;$("longueur").value=30}if(f=="30x20"){$("largeur").value=30;$("longueur").value=20}calc()}
-function calc(){let mode=$("mode").value,lp=n($("pctLevure").value),ep=n($("pctEau").value),sp=n($("pctSel").value),hp=n($("pctHuile").value),split=n($("split").value)/100,farine=n($("farine").value),unites=n($("nbUnites").value),vise=0;if(mode=="patons")vise=unites*n($("poidsPaton").value);if(mode=="plaques")vise=unites*n($("largeur").value)*n($("longueur").value)*n($("grammage").value);if(mode=="diametre"){let surface=Math.PI*Math.pow(n($("diametre").value)/2,2);vise=unites*surface*.42}if(mode!="farine"){let lr=lp/100*($("typeLevure").value=="fraiche"?3:1);farine=vise/(1+lr+ep/100+sp/100+hp/100)}let lev=farine*lp/100,leva=farine*levureAutoPct()/100;if($("typeLevure").value=="fraiche"){lev*=3;leva*=3}let eau=farine*ep/100,sel=farine*sp/100,huile=farine*hp/100,total=farine+lev+eau+sel+huile,unite=unites?total/unites:0;$("rFarine").textContent=g(farine);$("rLevure").textContent=g(lev);$("rLevAuto").textContent=g(leva);$("rEau").textContent=g(eau);$("rEaux").textContent=g(eau*split)+" / "+g(eau*(1-split));$("rSel").textContent=g(sel);$("rHuile").textContent=g(huile);$("rTotal").textContent=g(total);$("rUnite").textContent=g(unite);$("lLevAuto").textContent=levureAutoPct().toFixed(3).replace(".",",")+" % farine selon durée/température"}
+function calc(){updateModeFields();let mode=$("mode").value,lp=n($("pctLevure").value),ep=n($("pctEau").value),sp=n($("pctSel").value),hp=n($("pctHuile").value),split=n($("split").value)/100,farine=n($("farine").value),unites=n($("nbUnites").value),vise=0;if(mode=="patons")vise=unites*n($("poidsPaton").value);if(mode=="plaques")vise=unites*n($("largeur").value)*n($("longueur").value)*n($("grammage").value);if(mode=="diametre"){let surface=Math.PI*Math.pow(n($("diametre").value)/2,2);vise=unites*surface*.42}if(mode!="farine"){let lr=lp/100*($("typeLevure").value=="fraiche"?3:1);farine=vise/(1+lr+ep/100+sp/100+hp/100)}let lev=farine*lp/100,leva=farine*levureAutoPct()/100;if($("typeLevure").value=="fraiche"){lev*=3;leva*=3}let eau=farine*ep/100,sel=farine*sp/100,huile=farine*hp/100,total=farine+lev+eau+sel+huile,unite=unites?total/unites:0;$("rFarine").textContent=g(farine);$("rLevure").textContent=g(lev);$("rLevAuto").textContent=g(leva);$("rEau").textContent=g(eau);$("rEaux").textContent=g(eau*split)+" / "+g(eau*(1-split));$("rSel").textContent=g(sel);$("rHuile").textContent=g(huile);$("rTotal").textContent=g(total);$("rUnite").textContent=g(unite);$("lLevAuto").textContent=levureAutoPct().toFixed(3).replace(".",",")+" % farine selon durée/température"}
 function recipeText(){return ["Pizza Lab Master", "Type : "+recettes[$("typePate").value].nom, "Farine recommandée : "+$("farineReco").textContent, "Farine : "+$("rFarine").textContent, "Levure intelligente : "+$("rLevAuto").textContent, "Levure manuelle : "+$("rLevure").textContent, "Eau : "+$("rEau").textContent, "Eau 1/2 : "+$("rEaux").textContent, "Sel : "+$("rSel").textContent, "Huile : "+$("rHuile").textContent, "Total : "+$("rTotal").textContent].join("\n")}
 function saveCarnet(txt){let arr=JSON.parse(localStorage.getItem("carnetPizza")||"[]");arr.unshift({date:new Date().toLocaleString("fr-FR"),txt});localStorage.setItem("carnetPizza",JSON.stringify(arr.slice(0,30)));renderCarnet()}
 function renderCarnet(){let arr=JSON.parse(localStorage.getItem("carnetPizza")||"[]");$("carnetList").innerHTML=arr.length?arr.map((x,i)=>'<div class="fav"><b>'+(i+1)+'. '+x.date+'</b><pre style="white-space:pre-wrap">'+x.txt+'</pre></div>').join(""):"Aucune entrée."}
@@ -185,7 +217,10 @@ $("clearCarnet").onclick=()=>{localStorage.removeItem("carnetPizza");renderCarne
 $("makePlanning").onclick=()=>{let dt=new Date($("serviceTime").value),h=n($("planMaturation").value);if(!dt.getTime()){$("planningResult").textContent="Choisis une date de service.";return}let sortie=new Date(dt.getTime()-4*3600000),petr=new Date(dt.getTime()-h*3600000);let boul=new Date(petr.getTime()+1*3600000),frigo=new Date(boul.getTime()+1*3600000);$("planningResult").innerHTML="<b>Planning</b><br>Pétrissage : "+petr.toLocaleString("fr-FR")+"<br>Boulage / mise en bac : "+boul.toLocaleString("fr-FR")+"<br>Frigo : "+frigo.toLocaleString("fr-FR")+"<br>Sortie du frigo : "+sortie.toLocaleString("fr-FR")+"<br>Service : "+dt.toLocaleString("fr-FR")};
 $("makeCuisson").onclick=()=>{let f=$("four").value,s=$("styleCuisson").value;let txt="";if(s=="taglia")txt="Sole 300-330°C, feu doux/moyen, cuisson 6-10 min selon épaisseur. Pré-cuire puis garnir.";if(s=="tonda")txt="Sole 330-380°C, cuisson 2-4 min, tourner régulièrement.";if(s=="napo")txt="Sole 420-480°C, cuisson 60-120 s.";if(f=="cozze")txt+=" Sur Cozze : surveiller la rotation et éviter de trop chauffer la sole.";if(f=="gozney")txt+=" Sur Gozney : très bon contrôle, baisse le feu après préchauffage.";if(f=="ooni")txt+=" Sur Ooni : attention au brûleur latéral, tourner souvent.";if(f=="effeuno")txt+=" Sur Effeuno : réglage sole/voûte très précis."; $("cuissonResult").textContent=txt};
 $("calcCout").onclick=()=>{let farine=n($("rFarine").textContent),huile=n($("rHuile").textContent),nb=n($("nbPizzasCout").value);let cout=farine/1000*n($("prixFarine").value)+huile/1000*n($("prixHuile").value)+nb*n($("prixGarniture").value);$("coutResult").innerHTML="<b>Coût total estimé :</b> "+euro(cout)+"<br><b>Coût par pizza :</b> "+euro(nb?cout/nb:0)};
-["typePate","mode","typeLevure","farine","nbUnites","poidsPaton","diametre","grammage","largeur","longueur","maturation","frigo","tempPiece","split","pctLevure","pctEau","pctSel","pctHuile"].forEach(id=>$(id).addEventListener("input",calc));
+["typePate","mode","typeLevure","farine","nbUnites","poidsPaton","diametre","grammage","largeur","longueur","maturation","frigo","tempPiece","split","pctLevure","pctEau","pctSel","pctHuile"].forEach(id=>{
+  $(id).addEventListener("input",calc);
+  $(id).addEventListener("change",calc);
+});
 $("typePate").addEventListener("change",loadRecipe);$("formatPlaque").addEventListener("change",updatePlaque);
 loadRecipe();renderCarnet();
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}))}
