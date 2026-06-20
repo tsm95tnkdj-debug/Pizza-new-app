@@ -1,6 +1,6 @@
 {
-  "name": "Pizza Lab Pro",
-  "short_name": "Pizza Pro",
+  "name": "Pizza Lab Master",
+  "short_name": "Pizza Master",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff4df",
